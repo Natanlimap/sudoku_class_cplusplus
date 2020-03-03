@@ -8,11 +8,17 @@
 		{
 			private:
 				int V[9][9];
+				int emptySpace;
 			public:
 
 				//
-				sudoku(int **clientData);
+				sudoku();
+				sudoku(int otherTable[9][9]);
 				~sudoku();
+				bool isComplete();
+				bool vefValido();
+				void printTable();
+			
 		};
 	}
 	

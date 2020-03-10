@@ -6,7 +6,7 @@
 		sudoku::sudoku(){ // initial constructor
 			for(short i {0}; i < 9; i++){ //walks in all table positions and put 0
 				for(short j {0}; j < 9; j++){
-					table[i][j] = 0; 
+					table[i][j] = short(); 
 				}		
 			}
 			emptySpace = 81; //the all spaces are with 0
@@ -46,12 +46,15 @@
 		 bool sudoku::checkValid(){ //check if the table is valid
 			for(short i{0};i<9;i++){
 				if(not checkLine(i)){//check each line)
+					std::cout << std::endl << i << " LINE IS NOT VALID";
 					return false;
 				} 
 				if(not checkColumn(i)){//check each column)
+					std::cout << std::endl << i << " COLUMN IS NOT VALID";
 					return false;
 				} 
 				if(not checkQuadrant(i)){//check each column)
+					std::cout << std::endl << i << "QUADRANT IS NOT VALID";
 					return false;
 				} 
 			}
@@ -62,20 +65,21 @@
 			validMap.erase(validMap.begin(), validMap.end());
 			bool test = true;
 			for(short j{0} ;j <9 ;++j){
-				switch(table[i][j]){
-					case 1: test = validMap.insert(std::pair<short, short> (1, 1)).second; break;
-					case 2: test = validMap.insert(std::pair<short, short> (2, 1)).second; break;
-					case 3: test = validMap.insert(std::pair<short, short> (3, 1)).second; break;
-					case 4: test = validMap.insert(std::pair<short, short> (4, 1)).second; break;
-					case 5: test = validMap.insert(std::pair<short, short> (5, 1)).second; break;
-					case 6: test = validMap.insert(std::pair<short, short> (6, 1)).second; break;
-					case 7: test = validMap.insert(std::pair<short, short> (7, 1)).second; break;
-					case 8: test = validMap.insert(std::pair<short, short> (8, 1)).second; break;
-					case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
-				}
-				if(not test){
-					std::cout << i << " " << j;
-					return test;
+				if(not table[i][j] == 0){
+					switch(table[i][j]){
+						case 1: test = validMap.insert(std::pair<short, short> (1, 1)).second; break;
+						case 2: test = validMap.insert(std::pair<short, short> (2, 1)).second; break;
+						case 3: test = validMap.insert(std::pair<short, short> (3, 1)).second; break;
+						case 4: test = validMap.insert(std::pair<short, short> (4, 1)).second; break;
+						case 5: test = validMap.insert(std::pair<short, short> (5, 1)).second; break;
+						case 6: test = validMap.insert(std::pair<short, short> (6, 1)).second; break;
+						case 7: test = validMap.insert(std::pair<short, short> (7, 1)).second; break;
+						case 8: test = validMap.insert(std::pair<short, short> (8, 1)).second; break;
+						case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
+					}
+					if(not test){
+						return test;
+					}
 				}
 			}
 			return test;
@@ -85,21 +89,21 @@
 			validMap.erase(validMap.begin(), validMap.end());
 			bool test = true;
 			for(short j{0} ;j <9 ;++j){
-				switch(table[j][i]){
-					case 1: test = validMap.insert(std::pair<short, short> (1, 1)).second; break;
-					case 2: test = validMap.insert(std::pair<short, short> (2, 1)).second; break;
-					case 3: test = validMap.insert(std::pair<short, short> (3, 1)).second; break;
-					case 4: test = validMap.insert(std::pair<short, short> (4, 1)).second; break;
-					case 5: test = validMap.insert(std::pair<short, short> (5, 1)).second; break;
-					case 6: test = validMap.insert(std::pair<short, short> (6, 1)).second; break;
-					case 7: test = validMap.insert(std::pair<short, short> (7, 1)).second; break;
-					case 8: test = validMap.insert(std::pair<short, short> (8, 1)).second; break;
-					case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
-				}
-				if(not test){
-
-					std::cout << j << " " << i;
-					return test;
+				if(not table[j][i] == 0){
+					switch(table[j][i]){
+						case 1: test = validMap.insert(std::pair<short, short> (1, 1)).second; break;
+						case 2: test = validMap.insert(std::pair<short, short> (2, 1)).second; break;
+						case 3: test = validMap.insert(std::pair<short, short> (3, 1)).second; break;
+						case 4: test = validMap.insert(std::pair<short, short> (4, 1)).second; break;
+						case 5: test = validMap.insert(std::pair<short, short> (5, 1)).second; break;
+						case 6: test = validMap.insert(std::pair<short, short> (6, 1)).second; break;
+						case 7: test = validMap.insert(std::pair<short, short> (7, 1)).second; break;
+						case 8: test = validMap.insert(std::pair<short, short> (8, 1)).second; break;
+						case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
+					}
+					if(not test){
+						return test;
+					}
 				}
 			}
 			return test;
@@ -107,45 +111,72 @@
 		bool sudoku::checkQuadrant(const short quadrantId){
 			validMap.erase(validMap.begin(), validMap.end());
 			bool test = true;
-			short x;
-			short y;
-			switch(quadrantId){
-				case 0: x=0;y=0;break;
-				case 1: x=3;y=0;break;
-				case 2: x=6;y=0;break;
-				case 3: x=0;y=3;break;
-				case 4: x=3;y=3;break;
-				case 5: x=6;y=3;break;
-				case 6: x=0;y=6;break;
-				case 7: x=3;y=6;break;
-				case 8: x=6;y=6;break;
-			}
-
-			for(x;x < x + 3;++x){
-				for (y; y < y+3; ++y)
-				{
-					std::cout <<" " <<x << " "<<y;
-					switch(table[x][y]){
-					case 1: test = validMap.insert(std::pair<short, short> (1, 1)).second; break;
-					case 2: test = validMap.insert(std::pair<short, short> (2, 1)).second; break;
-					case 3: test = validMap.insert(std::pair<short, short> (3, 1)).second; break;
-					case 4: test = validMap.insert(std::pair<short, short> (4, 1)).second; break;
-					case 5: test = validMap.insert(std::pair<short, short> (5, 1)).second; break;
-					case 6: test = validMap.insert(std::pair<short, short> (6, 1)).second; break;
-					case 7: test = validMap.insert(std::pair<short, short> (7, 1)).second; break;
-					case 8: test = validMap.insert(std::pair<short, short> (8, 1)).second; break;
-					case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
+			short xmin;
+			short ymin;
+			short xmax;
+			short ymax; 
+				switch(quadrantId){
+					case 0: xmin=0;ymin=0;break;
+					case 1: xmin=3;ymin=0;break;
+					case 2: xmin=6;ymin=0;break;
+					case 3: xmin=0;ymin=3;break;
+					case 4: xmin=3;ymin=3;break;
+					case 5: xmin=6;ymin=3;break;
+					case 6: xmin=0;ymin=6;break;
+					case 7: xmin=3;ymin=6;break;
+					case 8: xmin=6;ymin=6;break;
 				}
-					if(not test){
-						return test;
+				ymax = ymin + 3;
+				xmax = xmin + 3;
+			for(short x {xmin};x < xmax;++x){
+				for (short y {ymin}; y < ymax; ++y)
+				{
+					if(not table[x][y] == 0){
+						switch(table[x][y]){
+							case 1: test = validMap.insert(std::pair<short, short> (1, 1)).second; break;
+							case 2: test = validMap.insert(std::pair<short, short> (2, 1)).second; break;
+							case 3: test = validMap.insert(std::pair<short, short> (3, 1)).second; break;
+							case 4: test = validMap.insert(std::pair<short, short> (4, 1)).second; break;
+							case 5: test = validMap.insert(std::pair<short, short> (5, 1)).second; break;
+							case 6: test = validMap.insert(std::pair<short, short> (6, 1)).second; break;
+							case 7: test = validMap.insert(std::pair<short, short> (7, 1)).second; break;
+							case 8: test = validMap.insert(std::pair<short, short> (8, 1)).second; break;
+							case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
+						}
+						if(not test){
+							std::cout << std::endl<< "NOT VALID" << std::endl;
+							return test;
+						}
 					}
 
 				}
-					std::cout<< std::endl;
 
 			}
 			return true;
 		}
+
+		void solveSudoku(){
+			if(not checkValid()){
+				return;
+			}
+			solveSudoku(0, 0, 0)
+		}
+		bool recursiveSudoku(short x, short y, short target){
+			short quadrant;
+			if(table[x][y] == 0){
+				table[x][y] = target;
+				if(checkColumn(y) and checkLine(x)){
+					switch(x){
+						case x < 3: switch(y){ case: y < 3;quadrant = 0;break;case y < 6: quadrant = 1; case y < 9: quadrant = 2};
+						case x < 6: switch(y){ case: y < 3;quadrant = 3;break;case y < 6: quadrant = 4; case y < 9: quadrant = 5};
+						case x < 9: switch(y){ case: y < 3;quadrant = 6;break;case y < 6: quadrant = 7; case y < 9: quadrant = 8};
+						if(checkQuadrant(quadrant)){
+							
+						}
+					}
+				}
+			}
+		} 
 	
 
 // //Faz uma verificação para as 9 linhas, as 9 coluna e cada quadrante, 

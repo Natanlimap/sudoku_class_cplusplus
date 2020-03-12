@@ -17,8 +17,11 @@ int main(){
 		}
 	};
 	sud::sudoku B(A[0]);
+	std::cout <<"ANTES" << std::endl;
+
 	B.printTable();
-	if(B.checkValid())
-		std::cout<<"valid" << std::endl;
+	B.solve();
+	std::cout <<"DEPOIS" << std::endl;
+	B.printTable();
 	return 0;
 }

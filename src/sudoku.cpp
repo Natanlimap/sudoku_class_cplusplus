@@ -6,7 +6,8 @@
 		sudoku::sudoku(){ // initial constructor
 			for(short i {0}; i < 9; i++){ //walks in all table positions and put 0
 				for(short j {0}; j < 9; j++){
-					table[i][j] = short(); 
+					table[i][j] = short();
+					copy[i][j] = short(); 
 				}		
 			}
 			emptySpace = 81; //the all spaces are with 0
@@ -20,6 +21,7 @@
 				for(short i {0}; i < 9; i++){ 
 					for(short j {0}; j < 9; j++){
 						table[i][j] = otherTable[i][j];
+						copy[i][j] = table[i][j];
 						if(table[i][j] != 0){ //if isnt 0, the table[i][j] isnt a empty space
 							--emptySpace; //so decreases the empty spaces counter
 						}
@@ -46,15 +48,12 @@
 		 bool sudoku::checkValid(){ //check if the table is valid
 			for(short i{0};i<9;i++){
 				if(not checkLine(i)){//check each line)
-					std::cout << std::endl << i << " LINE IS NOT VALID";
 					return false;
 				} 
 				if(not checkColumn(i)){//check each column)
-					std::cout << std::endl << i << " COLUMN IS NOT VALID";
 					return false;
 				} 
 				if(not checkQuadrant(i)){//check each column)
-					std::cout << std::endl << i << "QUADRANT IS NOT VALID";
 					return false;
 				} 
 			}
@@ -144,7 +143,6 @@
 							case 9: test = validMap.insert(std::pair<short, short> (9, 1)).second; break;
 						}
 						if(not test){
-							std::cout << std::endl<< "NOT VALID" << std::endl;
 							return test;
 						}
 					}
@@ -155,28 +153,75 @@
 			return true;
 		}
 
-		void solveSudoku(){
-			if(not checkValid()){
-				return;
-			}
-			solveSudoku(0, 0, 0)
+		bool sudoku::solveSudoku(short x, short y, short minValue){
+			recursiveSudoku(x, y, minValue);
+				if(x == 8 and y == 8){
+					return true;
+				}else if(y == 8){
+					while(minValue != 9 and not solveSudoku(x+1, 0, 1)){
+						minValue++;
+						recursiveSudoku(x, y, minValue);
+					}
+					return false;
+				}else{
+					while(minValue != 9 and not solveSudoku(x, y + 1, 1)){
+							minValue++;
+							recursiveSudoku(x, y, minValue);
+
+					}
+					return false;
+				}
 		}
-		bool recursiveSudoku(short x, short y, short target){
+		bool sudoku::validSpace(short x,short y){
+			if(copy[x][y] == 0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		void sudoku::solve(){
+			solveSudoku(0, 0, 1);
+		}		
+		bool sudoku::recursiveSudoku(short x, short y, short target){
+
 			short quadrant;
-			if(table[x][y] == 0){
-				table[x][y] = target;
-				if(checkColumn(y) and checkLine(x)){
-					switch(x){
-						case x < 3: switch(y){ case: y < 3;quadrant = 0;break;case y < 6: quadrant = 1; case y < 9: quadrant = 2};
-						case x < 6: switch(y){ case: y < 3;quadrant = 3;break;case y < 6: quadrant = 4; case y < 9: quadrant = 5};
-						case x < 9: switch(y){ case: y < 3;quadrant = 6;break;case y < 6: quadrant = 7; case y < 9: quadrant = 8};
-						if(checkQuadrant(quadrant)){
-							
-						}
+			if(validSpace(x, y)){
+				if(x < 3){
+					if(y < 3){
+						quadrant = 0;
+					}else if(y < 6){
+						quadrant = 1;
+					}else if(y < 9){
+						quadrant = 2;
+					}
+				}else if(y < 6){
+					if(y < 3){
+						quadrant = 3;
+					}else if(y < 6){
+						quadrant = 4;
+					}else if(y < 9){
+						quadrant = 5;
+					}
+				}else if(y < 9){
+					if(y < 3){
+						quadrant = 6;
+					}else if(y < 6){
+						quadrant = 7;
+					}else if(y < 9){
+						quadrant = 8;
 					}
 				}
+					table[x][y] = target;
+					if(checkColumn(y) and checkLine(x) and checkQuadrant(quadrant)){
+						return true;	
+					}else{
+						table[x][y] = 0;
+						return false;
+					}
+			}else{
+				return true;
 			}
-		} 
+		}
 	
 
 // //Faz uma verificação para as 9 linhas, as 9 coluna e cada quadrante, 

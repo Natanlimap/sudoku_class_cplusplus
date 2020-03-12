@@ -10,6 +10,7 @@
 		{
 			private:
 				short table[9][9];
+				short copy[9][9];
 				short emptySpace;
 				std::map<short, short> validMap;
 				std::vector<short> myLine;
@@ -19,6 +20,10 @@
 				bool checkColumn(short i);
 				bool checkQuadrant(short i);
 				void resetMap();
+				bool recursiveSudoku(short x, short y, short target);
+				bool validSpace(short x, short y);
+				bool solveSudoku(short x, short y, short minValue);
+
 
 			public:
 
@@ -29,7 +34,7 @@
 				bool isComplete();
 				void printTable();
 				bool checkValid();
-				void solveSudoku();
+				void solve();
 				//
 				//tip
 				//TODO SOLVE

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../lib/sudoku.h"
+#include "../lib/database.h"
 
 
 int main(){
@@ -16,12 +17,6 @@ int main(){
 			{0 ,0 ,0 ,0 ,8 ,0 ,0 ,7 ,9 },
 		}
 	};
-	sud::sudoku B(A[0]);
-	std::cout <<"ANTES" << std::endl;
-
-	B.printTable();
-	B.solve();
-	std::cout <<"DEPOIS" << std::endl;
-	B.printTable();
+	sud::database a("example.txt", false);
 	return 0;
 }
